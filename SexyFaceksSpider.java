@@ -25,8 +25,20 @@ public class SexyFaceksSpider{
 	private static final String base_dir = "d:/pics/";
 	private static final String base_url = "http://sexy.faceks.com/";
 	
-	public static void main(String[] args) throws IOException {
-		Document document = Jsoup.connect(base_url).get();
+	public static void main(String[] args) throws IOException, InterruptedException {
+		int pages = 100;
+		for (int i = 4; i < pages; i++) {
+			String url = base_url + "?page="+i;
+			System.out.println("当前请求的URL:"+url);
+			downloadPics(url);
+			Thread.sleep(10000);
+		}
+	}
+
+
+	private static void downloadPics(String url) throws IOException,
+			ClientProtocolException {
+		Document document = Jsoup.connect(url).get();
 		Elements elements = document.getElementsByClass("m-post-img");
 		Map<String, String> map  = getAlbumNameAndUrl(elements.toString());
 		for(Entry<String, String> entry: map.entrySet()){
@@ -49,6 +61,7 @@ public class SexyFaceksSpider{
 		for(int j = 0 ; j < elements2.size() ; j++){
 			String url = elements2.get(j).attr("bigimgsrc");
 			HttpClient client = new DefaultHttpClient();
+			System.out.println("正在下载图片地址:"+url);
 			HttpGet get = new HttpGet(url);
 			HttpResponse response = client.execute(get);
 			
@@ -61,6 +74,11 @@ public class SexyFaceksSpider{
 					dir.mkdir();
 				}
 				FileUtils.copyInputStreamToFile(content, new File(base_dir+dirName+"/"+getFilename(url)));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
