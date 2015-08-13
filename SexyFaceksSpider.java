@@ -27,11 +27,11 @@ public class SexyFaceksSpider{
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		int pages = 100;
-		for (int i = 4; i < pages; i++) {
+		for (int i = 6; i < pages; i++) {
 			String url = base_url + "?page="+i;
 			System.out.println("当前请求的URL:"+url);
 			downloadPics(url);
-			Thread.sleep(10000);
+			Thread.sleep(60000);
 		}
 	}
 
@@ -96,10 +96,11 @@ public class SexyFaceksSpider{
 		Elements elements = document.getElementsByClass("m-post-img");
 		for (int i = 0; i < elements.size(); i++) {
 			Document parse = Jsoup.parse(elements.get(i).toString());
-			
-			String value = parse.getElementsByClass("img").attr("href");
-			String key = parse.getElementsByTag("p").get(0).text();
-			album.put(key, value);
+			if(parse.getElementsByClass("img").size() != 0 && parse.getElementsByTag("p").size()  != 0){
+				String value = parse.getElementsByClass("img").attr("href");
+				String key = parse.getElementsByTag("p").get(0).text();
+				album.put(key, value);
+			}
 		}
 		return album;
 	}
