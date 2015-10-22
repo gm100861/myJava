@@ -35,8 +35,8 @@ public class CountryTest extends BaseDaoTestCase{
     @Resource
     private RegionDAO regionDao;
     
-    @Test
-    public void countryInsert() throws IOException{
+   @Test
+   public void countryInsert() throws IOException{
         try {
             AbstractConfiguration.setDefaultListDelimiter('-');
             XMLConfiguration configuration = new XMLConfiguration("e:/files/LocList.xml");
@@ -54,15 +54,15 @@ public class CountryTest extends BaseDaoTestCase{
                 if(StringUtils.isBlank(configuration.getString("CountryRegion("+i+").State[@Name]"))){
                     List<Object> citys = configuration.getList("CountryRegion("+i+").State.City[@Name]");
                     for (int q = 0 ; q < citys.size(); q++) {
-                        region.setCode(configuration.getString("CountryRegion("+i+").State("+q+").City[@Code]"));
+                        region.setCode(country.getCountryCode()+"-"+configuration.getString("CountryRegion("+i+").State("+q+").City[@Code]"));
                         region.setRegionNameC(citys.get(q).toString());
                         region.setUpperRegion(country.getCountryCode());
                     }
                 }else {
                     List<Object> citys = configuration.getList("CountryRegion("+i+").State[@Name]");
-                    RegionDO privoce = new RegionDO();
                     for (int c = 0 ; c < citys.size() ; c++) {
-                        privoce.setCode(configuration.getString("CountryRegion("+i+").State("+c+")[@Code]"));
+                        RegionDO privoce = new RegionDO();
+                        privoce.setCode(country.getCountryCode()+"-"+configuration.getString("CountryRegion("+i+").State("+c+")[@Code]"));
                         privoce.setCountryCode(country.getCountryCode());
                         privoce.setRegionNameC(configuration.getString("CountryRegion("+i+").State("+c+")[@Name]"));
                         privoce.setUpperRegion(country.getCountryCode());
@@ -70,7 +70,7 @@ public class CountryTest extends BaseDaoTestCase{
                         List<Object> list2 = configuration.getList("CountryRegion("+i+").State("+c+").City[@Name]");
                         for(int l = 0 ; l < list2.size() ; l++){
                             RegionDO subProvice = new RegionDO();
-                            subProvice.setCode(configuration.getString("CountryRegion("+i+").State("+c+").City("+l+")[@Code]"));
+                            subProvice.setCode(privoce.getCode()+"-"+configuration.getString("CountryRegion("+i+").State("+c+").City("+l+")[@Code]"));
                             subProvice.setCountryCode(country.getCountryCode());
                             subProvice.setRegionNameC(configuration.getString("CountryRegion("+i+").State("+c+").City("+l+")[@Name]"));
                             subProvice.setUpperRegion(privoce.getCode());
