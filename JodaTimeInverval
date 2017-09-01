@@ -1,0 +1,55 @@
+package org.linuxsogood.elastic.joda;
+
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by honway on 2017/9/1 15:56.
+ */
+public class JodaTimeInverval {
+    public static void main(String[] args) throws ParseException {
+
+        List<TimeIntervalUnit> timeList = new ArrayList<>();
+        timeList.add(new TimeIntervalUnit("09:00", "09:30"));
+        timeList.add(new TimeIntervalUnit("09:30", "10:00"));
+
+        System.out.println(isOverlap(timeList, new TimeIntervalUnit("09:00", "11:00")));
+
+    }
+
+    public static boolean isOverlap(List<TimeIntervalUnit> timeList, TimeIntervalUnit timeIntervalUnit) throws ParseException {
+        if (timeList == null || timeList.size() == 0 || timeIntervalUnit == null) {
+            return false;
+        }
+        boolean result = false;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMddHH:mm");
+        DateTime dateTime = new DateTime();
+        int year = dateTime.getYear();
+        int monthOfYear = dateTime.getMonthOfYear();
+        int dayOfMonth = dateTime.getDayOfMonth();
+        for (TimeIntervalUnit intervalUnit : timeList) {
+            String start = year  + "" +  monthOfYear + "" + dayOfMonth + intervalUnit.getStart();
+            String end = year  + "" +  monthOfYear  + "" +  dayOfMonth + intervalUnit.getEnd();
+            DateTime startTime = new DateTime(format.parse(start));
+            DateTime endTime = new DateTime(format.parse(end));
+            Interval startInterval = new Interval(startTime.toDate().getTime(), endTime.toDate().getTime());
+
+            String judgeStart = year  + "" +  monthOfYear  + "" +  dayOfMonth + timeIntervalUnit.getStart();
+            String judgeEnd = year  + "" +  monthOfYear  + "" +  dayOfMonth + timeIntervalUnit.getEnd();
+            DateTime judgeStartTime = new DateTime(format.parse(judgeStart));
+            DateTime judgeEndTime = new DateTime(format.parse(judgeEnd));
+            Interval endInterval = new Interval(judgeStartTime.toDate().getTime(), judgeEndTime.toDate().getTime());
+            if (startInterval.overlaps(endInterval)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+}
