@@ -1,0 +1,215 @@
+package com.tramy.es.common.util;
+
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.*;
+
+import java.util.List;
+
+/**
+ * Created by ${hhf} on 2017/2/7.
+ */
+public class ExcelUtil {
+
+    public static HSSFWorkbook getHSSFWorkbook(String sheetName,List<String> title, List<List<String>> values, HSSFWorkbook wb){
+        // 第一步，创建一个webbook，对应一个Excel文件
+        if(wb == null){
+            wb = new HSSFWorkbook();
+        }
+        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+        HSSFSheet sheet = wb.createSheet(sheetName);
+        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+        HSSFRow row = sheet.createRow(0);
+        // 第四步，创建单元格，并设置值表头 设置表头居中
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+        HSSFCell cell = null;
+        //创建标题
+        for(int i=0;i<title.size();i++){
+            cell = row.createCell(i);
+            cell.setCellValue(title.get(i));
+            cell.setCellStyle(style);
+        }
+        //创建内容
+        for (int i = 0; i < values.size(); i++) {
+            row = sheet.createRow(i + 1);
+            for (int j = 0; j < values.get(i).size(); j++) {
+                row.createCell(j).setCellValue(values.get(i).get(j));
+            }
+        }
+
+        return wb;
+    }
+
+    public static HSSFWorkbook getHSSFWorkbook(String sheetName,String []title,String [][]values, HSSFWorkbook wb){
+        // 第一步，创建一个webbook，对应一个Excel文件
+        if(wb == null){
+            wb = new HSSFWorkbook();
+        }
+        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+        HSSFSheet sheet = wb.createSheet(sheetName);
+        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+        HSSFRow row = sheet.createRow(0);
+        // 第四步，创建单元格，并设置值表头 设置表头居中
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+        HSSFCell cell = null;
+        //创建标题
+        for(int i=0;i<title.length;i++){
+            cell = row.createCell(i);
+            cell.setCellValue(title[i]);
+            cell.setCellStyle(style);
+        }
+        //创建内容
+        for(int i=0;i<values.length;i++){
+            row = sheet.createRow(i + 1);
+            for(int j=0;j<values[i].length;j++){
+                row.createCell(j).setCellValue(values[i][j]);
+            }
+        }
+
+        return wb;
+    }
+
+    /**
+     * 获取2007格式以上的excel对象. 能生成excel的数据最多行为 1048576行
+     * @param sheetName sheet名称
+     * @param title 表头
+     * @param values 值
+     * @param xb
+     * @return
+     */
+    public static XSSFWorkbook getXSSFWorkbook(String sheetName, String []title, String [][]values, XSSFWorkbook xb){
+        // 第一步，创建一个webbook，对应一个Excel文件
+        if(xb == null){
+            xb = new XSSFWorkbook();
+        }
+        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+        XSSFSheet sheet = xb.createSheet(sheetName);
+        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+        XSSFRow row = sheet.createRow(0);
+        // 第四步，创建单元格，并设置值表头 设置表头居中
+        XSSFCellStyle style = xb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+        XSSFCell cell = null;
+        //创建标题
+        for(int i=0;i<title.length;i++){
+            cell = row.createCell(i);
+            cell.setCellValue(title[i]);
+            cell.setCellStyle(style);
+        }
+        //创建内容
+        for(int i=0;i<values.length;i++){
+            row = sheet.createRow(i + 1);
+            for(int j=0;j<values[i].length;j++){
+                row.createCell(j).setCellValue(values[i][j]);
+            }
+        }
+
+        return xb;
+    }
+    /**
+     * 获取2007格式以上的excel对象. 能生成excel的数据最多行为 1048576行
+     * @param sheetName sheet名称
+     * @param title 表头
+     * @param values 值
+     * @param xb
+     * @return
+     */
+    public static XSSFWorkbook getXSSFWorkbook(String sheetName, List<String> title, List<List<String>> values, XSSFWorkbook xb){
+        // 第一步，创建一个webbook，对应一个Excel文件
+        if(xb == null){
+            xb = new XSSFWorkbook();
+        }
+        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet
+        XSSFSheet sheet = xb.createSheet(sheetName);
+        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+        XSSFRow row = sheet.createRow(0);
+        // 第四步，创建单元格，并设置值表头 设置表头居中
+        XSSFCellStyle style = xb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
+
+        XSSFCell cell = null;
+        //创建标题
+        for (int i = 0; i < title.size(); i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(title.get(i));
+            cell.setCellStyle(style);
+        }
+        //创建内容
+        for (int i = 0; i < values.size(); i++) {
+            row = sheet.createRow(i + 1);
+            for (int j = 0; j < values.get(i).size(); j++) {
+                row.createCell(j).setCellValue(values.get(i).get(j));
+            }
+        }
+
+        return xb;
+    }
+
+    /**
+     * 产品销售汇总导出Excel
+     * @param tableHeader 表格头
+     * @param tableData 表格数据
+     * @return 返回excel对象
+     */
+    public static XSSFWorkbook createSaleSummarizing(List<List<String>> tableHeader, List<List<String>> tableData) {
+        XSSFWorkbook hb = new XSSFWorkbook();
+        XSSFCellStyle headerStyle = hb.createCellStyle();
+        headerStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+        headerStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
+        XSSFFont font = hb.createFont();
+        font.setBold(true);
+        font.setFontHeight(12);
+        headerStyle.setFont(font);
+        XSSFCellStyle contentStyle = hb.createCellStyle();
+        contentStyle.setAlignment(XSSFCellStyle.ALIGN_LEFT);
+        contentStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
+        XSSFFont contentFont = hb.createFont();
+        contentFont.setFontHeight(11);
+        contentStyle.setFont(contentFont);
+
+        XSSFSheet sheet = hb.createSheet("产品销售汇总");
+        XSSFRow rowOne = sheet.createRow(0);
+        XSSFRow rowTwo = sheet.createRow(1);
+        List<String> titleLineOne = tableHeader.get(0);
+        int mergeOffset = 0;    // 合并
+        int colNumber = 0; // 列数
+        for (int i = 0; i < titleLineOne.size(); i++, colNumber++) {
+            String cellStr = titleLineOne.get(i);
+            XSSFCell cell = rowOne.createCell(i + mergeOffset);
+            if (i < 4 || (i + 2) >= titleLineOne.size()) {
+                // 合并行
+                CellRangeAddress region = new CellRangeAddress(0, 1, colNumber, colNumber);
+                sheet.addMergedRegion(region);
+            } else {
+                //合并列
+                CellRangeAddress region = new CellRangeAddress(0, 0, i + mergeOffset, i + mergeOffset + 1);
+                mergeOffset = mergeOffset + 1;
+                colNumber = colNumber +1;
+                sheet.addMergedRegion(region);
+            }
+            cell.setCellStyle(headerStyle);
+            cell.setCellValue(cellStr);
+        }
+        List<String> titleLineTwo = tableHeader.get(1);
+        for (int i = 0; i < titleLineTwo.size(); i++) {
+            XSSFCell cell = rowTwo.createCell(i+4);
+            cell.setCellValue(titleLineTwo.get(i));
+            cell.setCellStyle(headerStyle);
+        }
+        for (int i = 0; i < tableData.size(); i++) {
+            XSSFRow row = sheet.createRow(i + 2);
+            List<String> rowStrList = tableData.get(i);
+            for (int j = 0; j < rowStrList.size(); j++) {
+                XSSFCell cell = row.createCell(j);
+                cell.setCellStyle(contentStyle);
+                cell.setCellValue(rowStrList.get(j));
+            }
+        }
+        return hb;
+    }
+}
