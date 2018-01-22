@@ -36,4 +36,8 @@ public class NoSpringTest {
         }
         return sb.toString();
     }
+    public static boolean isNumeric(String str){
+        Pattern pattern = Pattern.compile("^[+|-]?[0-9][.]?[0-9]*");
+        return pattern.matcher(str).matches();
+    }
 }
